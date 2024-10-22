@@ -1,23 +1,28 @@
-import { QueryCommand , DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { UpdateItemCommand, DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
 const client = new DynamoDBClient({});
-const TABLE_NAME = "Alex-Table1"
+const TABLE_NAME = "Alex-Table2"
 
 const main = async () => {
 	const params = {
 		TableName: TABLE_NAME,
-		KeyConditionExpression:"Actor = :actor",
-		ProjectionExpression: "Actor, Movie, #year, #role",
-		// This is necessary for reserved keyword
-		ExpressionAttributeNames:{
-			"#year":"Year",
-			"#role":"Role"
-		},
+		Key :{
+      "PK": {"S":"Amazon"},
+    },
+		// ConditionExpression: "contains(Admins, :user)",
+		UpdateExpression: "set #subType = :type",
+    ExpressionAttributeNames: {
+      "#subType":"SubscriptionType",
+      // "#user": "JeffBezos",
+      // "#type": "Corporate"
+    },
 		ExpressionAttributeValues: {
-			":actor": {"S": "Tom Hanks"},
-		},
+      ":type": {"S":"Corporate"},
+      // ":user": {"S":"JeffBezos"}
+    },
+    ReturnValues: "ALL_NEW",
 	};
-	const command = new QueryCommand(params);
+	const command = new UpdateItemCommand(params);
 	const response = await client.send(command);
 	console.log(response.Items);
 };
