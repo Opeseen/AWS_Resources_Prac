@@ -8,9 +8,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type":"module",
+  "type": "module",
   "description": "",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.670.0"
+    "@aws-sdk/client-dynamodb": "^3.670.0",
+    "alex-d-dynamodb-tutor": "file:"
   }
 }
