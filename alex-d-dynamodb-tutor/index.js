@@ -10,7 +10,7 @@ const main = async () => {
       "PK": {"S":"Amazon"}
     },
 		ConditionExpression: "contains(Admins, :user)",
-    UpdateExpression: "set SubscriptionType = :type",
+    UpdateExpression: "SET SubscriptionType = :type",
 		ExpressionAttributeValues: {
       ":type": {"S":"Business"},
       ":user": {"S":"JeffBezos"}
@@ -45,7 +45,7 @@ const input = async() => {
             "PK": {"S":"Oracle"}
           },
           TableName: TABLE_NAME,
-          UpdateExpression: "set SubscriptionType = :type",
+          UpdateExpression: "SET SubscriptionType = :type",
           ExpressionAttributeValues:{
             ":type": {"S":"Paid"}
           },
