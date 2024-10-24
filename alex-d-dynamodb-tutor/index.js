@@ -1,9 +1,11 @@
-import { UpdateItemCommand, DynamoDBClient, TransactWriteItemsCommand  } from "@aws-sdk/client-dynamodb";
+import { UpdateItemCommand, DynamoDBClient, TransactWriteItemsCommand,
+
+  } from "@aws-sdk/client-dynamodb";
 
 const client = new DynamoDBClient({});
-const TABLE_NAME = "Alex-Table2"
 
-const main = async () => {
+const main1 = async () => {
+  const TABLE_NAME = "Alex-Table2"
 	const params = {
 		TableName: TABLE_NAME,
 		Key :{
@@ -22,9 +24,10 @@ const main = async () => {
 	console.log(response);
 };
 
-// main()
+// main1()
 
-const input = async() => {
+const main2 = async() => {
+  const TABLE_NAME = "Alex-Table2"
   const params = {
     TransactItems: [
       {
@@ -63,5 +66,101 @@ const input = async() => {
   }
 };
 
-input()
+// main2()
 
+// Updating and Remove existing attributes.
+const main3 = async () => {
+  const TABLE_NAME = "Alex-Table1"
+	const params = {
+    Key :{
+      "Actor": {"S":"Tom Hanks"},
+      "Movie": {"S":"Cast Away"}
+    },
+    TableName: TABLE_NAME,
+		UpdateExpression: "SET Genre = :genre, #r = :role REMOVE #y", 
+    ExpressionAttributeNames:{
+      "#r": "Role",
+      "#y": "Year"
+    },
+		ExpressionAttributeValues: {
+			":role": {"S": "Chucks"},
+			":genre":{"S": "Poetry"}
+		},
+    ReturnValues: "ALL_NEW",
+	};
+	const command = new UpdateItemCommand(params);
+  try {
+    const response = await client.send(command);
+    console.log(response);
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+// main3()
+
+
+// Updating and Remove existing attribute and add new attribute.
+const main4 = async () => {
+  const TABLE_NAME = "Alex-Table1"
+	const params = {
+    Key :{
+      "Actor": {"S":"Tom Hanks"},
+      "Movie": {"S":"Cast Away"}
+    },
+    TableName: TABLE_NAME,
+		UpdateExpression: "SET Genre = :genre, #d = :duration, #r = :role REMOVE #y", 
+    ExpressionAttributeNames:{
+      "#r": "Role",
+      "#y": "Year",
+      "#d": "Duration"
+    },
+		ExpressionAttributeValues: {
+			":role": {"S": "Chucks"},
+			":genre":{"S": "Poetry"},
+      ":duration":{"S": "1hour"}
+		},
+    ReturnValues: "ALL_NEW",
+	};
+	const command = new UpdateItemCommand(params);
+  try {
+    const response = await client.send(command);
+    console.log(response);
+  } catch (error) {
+    console.log(error)
+  }
+};
+// main4()
+
+// Updating and existing attribute and add new attribute.
+const main5 = async () => {
+  const TABLE_NAME = "Alex-Table1"
+	const params = {
+    Key :{
+      "Actor": {"S":"Tom Hanks"},
+      "Movie": {"S":"Cast Away"}
+    },
+    TableName: TABLE_NAME,
+		UpdateExpression: "SET Genre = :genre, #y= :year, #d = :duration, #r = :role", 
+    ExpressionAttributeNames:{
+      "#r": "Role",
+      "#y": "Year",
+      "#d": "Duration"
+    },
+		ExpressionAttributeValues: {
+			":role": {"S": "Chucks"},
+			":genre":{"S": "Poetry"},
+      ":duration":{"S": "2hour"},
+      ":year":{"N": "2000"}
+		},
+    ReturnValues: "ALL_NEW",
+	};
+	const command = new UpdateItemCommand(params);
+  try {
+    const response = await client.send(command);
+    console.log(response);
+  } catch (error) {
+    console.log(error)
+  }
+};
+main5()
