@@ -216,4 +216,39 @@ const main6 = async () => {
   }
 };
 
-main6()
+// main6()
+
+
+// Incrementing Values
+const main7 = async () => {
+  const TABLE_NAME = "Alex-Table1"
+	const params = {
+    Key :{
+      "Actor": "Tim Allen",
+      "Movie": "Toy Story"
+    },
+    TableName: TABLE_NAME,
+		UpdateExpression: "SET Genre = :genre, #y= #y + :inc, #d = :duration, #r = :role", 
+    ExpressionAttributeNames:{
+      "#r": "Role",
+      "#y": "Year",
+      "#d": "Duration"
+    },
+		ExpressionAttributeValues: {
+			":role": "Scientist",
+			":genre": "Adult",
+      ":duration": "4hour",
+      ":inc": 20
+		},
+    ReturnValues: "ALL_NEW",
+	};
+	const command = new UpdateCommand(params);
+  try {
+    const response = await client.send(command);
+    console.log(response);
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+main7()
