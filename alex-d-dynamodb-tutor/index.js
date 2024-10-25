@@ -1,8 +1,27 @@
-import { UpdateItemCommand, DynamoDBClient, TransactWriteItemsCommand,
-
-  } from "@aws-sdk/client-dynamodb";
+import { UpdateItemCommand, DynamoDBClient, TransactWriteItemsCommand} 
+  from "@aws-sdk/client-dynamodb";
+import {QueryCommand, UpdateCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
 const client = new DynamoDBClient({});
+const docClient = DynamoDBDocumentClient.from(client);
+
+const run = async () => {
+  const TABLE_NAME = "Alex-Table1"
+	const params = {
+		TableName: TABLE_NAME,
+		KeyConditionExpression:"Actor = :actor",
+		FilterExpression:"Genre = :genre",
+		ExpressionAttributeValues: {
+			":actor": "Tom Hanks",
+			":genre": "Poetry"
+		},
+	};
+	const command = new QueryCommand(params);
+	const response = await docClient.send(command);
+	console.log(response.Items);
+};
+
+// run()
 
 const main1 = async () => {
   const TABLE_NAME = "Alex-Table2"
@@ -163,4 +182,38 @@ const main5 = async () => {
     console.log(error)
   }
 };
-main5()
+// main5()
+
+// Updating and existing attribute and add new attribute...Using the document client model
+const main6 = async () => {
+  const TABLE_NAME = "Alex-Table1"
+	const params = {
+    Key :{
+      "Actor": "Tim Allen",
+      "Movie": "Toy Story"
+    },
+    TableName: TABLE_NAME,
+		UpdateExpression: "SET Genre = :genre, #y= :year, #d = :duration, #r = :role", 
+    ExpressionAttributeNames:{
+      "#r": "Role",
+      "#y": "Year",
+      "#d": "Duration"
+    },
+		ExpressionAttributeValues: {
+			":role": "Scientist",
+			":genre": "Adult",
+      ":duration": "4hour",
+      ":year": 1998
+		},
+    ReturnValues: "ALL_NEW",
+	};
+	const command = new UpdateCommand(params);
+  try {
+    const response = await client.send(command);
+    console.log(response);
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+main6()
