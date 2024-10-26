@@ -251,4 +251,75 @@ const main7 = async () => {
   }
 };
 
-main7()
+// main7()
+
+// Append or remove items from list
+const main8 = async () => {
+  const TABLE_NAME = "Alex-Table2"
+	const params = {
+		TableName: TABLE_NAME,
+		Key :{
+      "PK": "Amazon"
+    },
+    UpdateExpression: "SET Admins = list_append(Admins, :admin)",
+		ExpressionAttributeValues: {
+      ":admin": ["Mike"],
+    },
+    ReturnValues: "ALL_NEW",
+	};
+	const command = new UpdateCommand(params);
+  try {
+    const response = await client.send(command);
+    console.log(response);
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+// main8()
+
+const main9 = async () => {
+  const TABLE_NAME = "Alex-Table2"
+	const params = {
+		TableName: TABLE_NAME,
+		Key :{
+      "PK": "Amazon"
+    },
+    UpdateExpression: "REMOVE Admins[4], Admins[3]",
+    ReturnValues: "ALL_NEW",
+	};
+	const command = new UpdateCommand(params);
+  try {
+    const response = await client.send(command);
+    console.log(response);
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+main9()
+
+// Add new list attribute
+const main10 = async () => {
+  const TABLE_NAME = "Alex-Table2"
+	const params = {
+		TableName: TABLE_NAME,
+		Key :{
+      "PK": "Facebook"
+    },
+    UpdateExpression: "SET Admins = :admin",
+		ExpressionAttributeValues: {
+      ":admin": ["Mark"],
+    },
+    ReturnValues: "ALL_NEW",
+	};
+	const command = new UpdateCommand(params);
+  try {
+    const response = await client.send(command);
+    console.log(response);
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+// main10()
