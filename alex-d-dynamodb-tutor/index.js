@@ -21,7 +21,7 @@ const run = async () => {
 	console.log(response.Items);
 };
 
-// run()
+run()
 
 const main1 = async () => {
   const TABLE_NAME = "Alex-Table2"
@@ -297,7 +297,7 @@ const main9 = async () => {
   }
 };
 
-main9()
+// main9()
 
 // Add new list attribute
 const main10 = async () => {
